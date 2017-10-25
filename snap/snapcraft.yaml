@@ -1,0 +1,47 @@
+name: clangd
+version: '6.0.0+git'
+summary: Language Server Protocol implementation for C/C++ IDEs
+description: |
+  Clangd is an implementation of the Language Server Protocol leveraging Clang.
+  Clangd’s goal is to provide language “smartness” features like code
+  completion, find references, etc. for clients such as C/C++ Editors.
+
+  Clangd is not meant to be used by C/C++ developers directly but rather from a
+  client implementing the protocol. A client would be typically implemented in
+  an IDE or an editor.
+
+grade: stable
+confinement: classic
+
+parts:
+  clangd:
+    build-packages:
+      - clang
+    plugin: cmake
+    source: https://github.com/llvm-mirror/llvm.git
+    source-depth: 1
+
+    prepare: |
+      rm -rf ../src/tools/clang
+      git clone --depth=1 https://github.com/llvm-mirror/clang ../src/tools/clang
+
+      rm -rf ../src/tools/clang/tools/extra
+      git clone --depth=1 https://github.com/llvm-mirror/clang-tools-extra ../src/tools/clang/tools/extra
+
+    configflags:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DCMAKE_C_COMPILER=clang
+      - -DCMAKE_CXX_COMPILER=clang++
+
+    make-parameters:
+      - -Ctools/clang/tools/extra/clangd
+
+    prime:
+      - -lib/*.a
+
+apps:
+  clangd:
+    command: clangd
+    plugs:
+      - home
+      - removable-media
