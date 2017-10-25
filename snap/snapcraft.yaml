@@ -1,5 +1,5 @@
 name: clangd
-version: '6.0.0+git'
+version: git
 summary: Language Server Protocol implementation for C/C++ IDEs
 description: |
   Clangd is an implementation of the Language Server Protocol leveraging Clang.
@@ -9,6 +9,13 @@ description: |
   Clangd is not meant to be used by C/C++ developers directly but rather from a
   client implementing the protocol. A client would be typically implemented in
   an IDE or an editor.
+version-script: |
+                for i in MAJOR MINOR PATCH; do
+                  sed -n "s/\s*set(LLVM_VERSION_$i \([0-9]\+\))/\1/p" \
+                    parts/clangd/src/CMakeLists.txt
+                done | paste -sd. | tr -d '\n'
+                echo -n "+git"
+                git -C parts/clangd/src rev-parse --short HEAD
 
 grade: stable
 confinement: classic
