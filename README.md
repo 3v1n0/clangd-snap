@@ -8,4 +8,6 @@ The easiest way to install clangd in Ubuntu and other Linux distros.
 
 `sudo snap install --classic clangd`
 
-Use this with your favourite IDE (sublime-text + LSP, vim-clangd...)
+Use this with your favourite IDE (sublime-text + LSP, vim-clangd, emacs, neovim...).
+
+Read more at http://langserver.org/ for the list of supported clients
