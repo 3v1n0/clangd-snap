@@ -49,6 +49,3 @@ parts:
 apps:
   clangd:
     command: clangd
-    plugs:
-      - home
-      - removable-media
